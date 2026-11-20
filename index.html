@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DavanteDent</title>
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+
+<body>
+  <!-- Header with logo -->
+  <header>
+    <img src="Davante_logotipo_navy.png" alt="logo-davante" />
+  </header>
+
+  <main>
+
+    <!-- Appointment form section -->
+    <section>
+      <h2>Datos de la Cita</h2>
+
+      <form id="formulario">
+        <input type="hidden" id="idCita">
+        <div class="fila">
+          <div>
+            <label for="fechaCita">Fecha cita:</label>
+            <input type="date" id="fechaCita">
+            <span></span>
+          </div>
+          <div>
+            <label for="hora">Hora:</label>
+            <input type="text" id="hora">
+            <span></span>
+          </div>
+          <div>
+            <label for="minuto">Minuto:</label>
+            <input type="text" id="minuto">
+            <span></span>
+          </div>
+        </div>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre">
+        <span></span>
+
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos">
+        <span></span>
+
+        <div class="fila">
+          <div>
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni">
+            <span></span>
+          </div>
+          <div>
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento">
+            <span></span>
+          </div>
+        </div>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" maxlength="9">
+        <span></span>
+
+        <label for="observaciones">Observaciones:</label>
+        <textarea id="observaciones" rows="3"></textarea>
+
+        <button type="submit">Guardar Cita</button>
+      </form>
+    </section>
+
+
+
+    <!-- Appointment list section -->
+    <section>
+      <h2>Listado de Citas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Orden</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>DNI</th>
+            <th>Fecha Nacimiento</th>
+            <th>Teléfono</th>
+            <th>Observaciones</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <h3>DavanteDent</h3>
+    <p>Calle Mayor, 1 Málaga, España · Teléfono: 952 000 000 · Email: davante_dent@davante.org</p>
+    <p><small>&copy; 2026 DavanteDent. All rights reserved.</small></p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+
+</html>

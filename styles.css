@@ -1,0 +1,117 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+h2{    
+    text-align: center;
+    margin-bottom: 20px;    
+}
+
+img{
+    width: 300px;
+    height: 90px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+main section:first-child {
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+main section:last-child {
+    width: 70%;
+    margin: 40px auto;
+}
+
+.fila {
+    display: flex;
+    gap: 10px;
+}
+
+.fila div {
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input, textarea {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin-top: 3px;
+    box-sizing: border-box;
+}
+
+button {
+    margin-top: 15px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.error {
+    border: 2px solid red;
+}
+
+form span {
+    color: red;
+    font-size: 12px;
+    display: block;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+footer {
+    width: 70%;
+    min-height: 60px;
+    margin: 30px auto 0 auto; 
+    padding: 20px 0;
+    background-color: #003594;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}   
+
+.btn-editar {
+    background-color: #ECD85A;
+    color: #000;
+    border: none;
+    margin-top: 0;
+}
+
+.btn-borrar {
+    background-color: #EC5A5A;
+    color: #fff;
+    border: none;
+    margin-top: 0;
+}
