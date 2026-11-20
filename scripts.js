@@ -33,7 +33,33 @@ function obtenerCitasDeCookie() {
     return [];
 }
 
-// CONTROL Y CÁLCULO AUTOMÁTICO DE LA LETRA DEL DNI EN TIEMPO REAL
+// CONTROLES EN TIEMPO REAL AL ESCRIBIR EN LOS CAMPOS
+
+// Evitar letras en hora y minuto mientras se escribe
+const inputHora = document.getElementById("hora");
+const inputMinuto = document.getElementById("minuto");
+
+inputHora.addEventListener("input", function() {
+    this.value = this.value.replace(/[^0-9]/g, "").slice(0, 2);
+});
+
+inputMinuto.addEventListener("input", function() {
+    this.value = this.value.replace(/[^0-9]/g, "").slice(0, 2);
+});
+
+// Evitar números en nombre y apellidos mientras se escribe
+const inputNombre = document.getElementById("nombre");
+const inputApellidos = document.getElementById("apellidos");
+
+inputNombre.addEventListener("input", function() {
+    this.value = this.value.replace(/[0-9]/g, "");
+});
+
+inputApellidos.addEventListener("input", function() {
+    this.value = this.value.replace(/[0-9]/g, "");
+});
+
+// Control y cálculo automático de la letra del DNI
 const inputDni = document.getElementById("dni");
 
 inputDni.addEventListener("input", function(evento) {
@@ -55,11 +81,21 @@ inputDni.addEventListener("input", function(evento) {
     }
 });
 
-// CONTROL EN TIEMPO REAL DEL TELÉFONO (solo números y máximo 9 dígitos)
+// Control del teléfono: avisa en tiempo real si se introducen letras y limita a 9 caracteres
 const inputTelefono = document.getElementById("telefono");
 
 inputTelefono.addEventListener("input", function() {
-    this.value = this.value.replace(/[^0-9]/g, "").slice(0, 9);
+    if (this.value.length > 9) {
+        this.value = this.value.slice(0, 9);
+    }
+
+    if (/[^0-9]/.test(this.value)) {
+        this.classList.add("error");
+        this.nextElementSibling.textContent = "El teléfono no puede contener letras.";
+    } else {
+        this.classList.remove("error");
+        this.nextElementSibling.textContent = "";
+    }
 });
 
 // 3. VALIDACIÓN DEL FORMULARIO
@@ -98,20 +134,30 @@ function validarFormulario() {
         marcarError(fechaCita, "No puede ser anterior a hoy.");
     }
 
-    if (hora.value.trim() === "" || isNaN(hora.value) || hora.value < 0 || hora.value > 23) {
-        marcarError(hora, "Hora inválida (0-23).");
+    // Hora: obligatoria, solo dígitos y entre 0 y 23
+    const horaVal = hora.value.trim();
+    if (horaVal === "" || !/^[0-9]+$/.test(horaVal) || parseInt(horaVal, 10) < 0 || parseInt(horaVal, 10) > 23) {
+        marcarError(hora, "Hora inválida (solo números de 0 a 23).");
     }
 
-    if (minuto.value.trim() === "" || isNaN(minuto.value) || minuto.value < 0 || minuto.value > 59) {
-        marcarError(minuto, "Minuto inválido (0-59).");
+    // Minuto: obligatorio, solo dígitos y entre 0 y 59
+    const minutoVal = minuto.value.trim();
+    if (minutoVal === "" || !/^[0-9]+$/.test(minutoVal) || parseInt(minutoVal, 10) < 0 || parseInt(minutoVal, 10) > 59) {
+        marcarError(minuto, "Minuto inválido (solo números de 0 a 59).");
     }
 
-    if (nombre.value.trim() === "" || !isNaN(nombre.value)) {
+    // Nombre: obligatorio y sin ningún número
+    if (nombre.value.trim() === "") {
         marcarError(nombre, "Nombre obligatorio.");
+    } else if (/[0-9]/.test(nombre.value)) {
+        marcarError(nombre, "El nombre no puede contener números.");
     }
 
-    if (apellidos.value.trim() === "" || !isNaN(apellidos.value)) {
+    // Apellidos: obligatorios y sin ningún número
+    if (apellidos.value.trim() === "") {
         marcarError(apellidos, "Apellidos obligatorios.");
+    } else if (/[0-9]/.test(apellidos.value)) {
+        marcarError(apellidos, "Los apellidos no pueden contener números.");
     }
 
     // Comprobar formato y letra oficial del DNI (módulo 23)
@@ -130,25 +176,36 @@ function validarFormulario() {
         }
     }
 
-    // Calcular la fecha límite (hoy hace 5 años en formato AAAA-MM-DD)
+    // Calcular fechas límite (mínimo 5 años, máximo 100 años)
     const limite5Anios = new Date();
     limite5Anios.setFullYear(limite5Anios.getFullYear() - 5);
     const fechaMaximaNacimiento = limite5Anios.toISOString().split("T")[0];
 
-    // Comprobar fecha de nacimiento (obligatoria, no futura y mayor de 5 años)
+    const limite100Anios = new Date();
+    limite100Anios.setFullYear(limite100Anios.getFullYear() - 100);
+    const fechaMinimaNacimiento = limite100Anios.toISOString().split("T")[0];
+
+    // Comprobar fecha de nacimiento (obligatoria, no futura, mayor de 5 años y menor de 100)
     if (fechaNacimiento.value === "") {
         marcarError(fechaNacimiento, "Fecha obligatoria.");
     } else if (fechaNacimiento.value > hoy) {
         marcarError(fechaNacimiento, "La fecha de nacimiento no puede ser futura.");
     } else if (fechaNacimiento.value > fechaMaximaNacimiento) {
         marcarError(fechaNacimiento, "El paciente debe ser mayor de 5 años.");
+    } else if (fechaNacimiento.value < fechaMinimaNacimiento) {
+        marcarError(fechaNacimiento, "La edad no puede ser superior a 100 años.");
     }
 
-    if (!/^[0-9]{9}$/.test(telefono.value.trim())) {
-        marcarError(telefono, "Teléfono inválido (9 números).");
+    // Comprobar teléfono (obligatorio, sin letras y exactamente 9 números)
+    if (telefono.value.trim() === "") {
+        marcarError(telefono, "Teléfono obligatorio.");
+    } else if (/[^0-9]/.test(telefono.value.trim())) {
+        marcarError(telefono, "El teléfono no puede contener letras.");
+    } else if (!/^[0-9]{9}$/.test(telefono.value.trim())) {
+        marcarError(telefono, "Teléfono inválido (debe tener 9 números).");
     }
 
-    return esValido;
+    return esValido;    
 }
 
 // 4. CREAR O MODIFICAR CITA AL ENVIAR EL FORMULARIO
